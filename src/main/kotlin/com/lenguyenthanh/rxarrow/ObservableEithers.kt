@@ -10,9 +10,15 @@ import io.reactivex.annotations.SchedulerSupport
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
 inline fun <E, T, R> Observable<Either<E, T>>.mapE(crossinline mapper: (T) -> R): Observable<Either<E, R>> {
+    return mapEither { mapper(it).right() }
+}
+
+@CheckReturnValue
+@SchedulerSupport(SchedulerSupport.NONE)
+inline fun <E, T, R> Observable<Either<E, T>>.mapEither(crossinline mapper: (T) -> Either<E, R>): Observable<Either<E, R>> {
     return map { either ->
         when (either) {
-            is Either.Right -> mapper(either.b).right()
+            is Either.Right -> mapper(either.b)
             is Either.Left -> either
         }
     }
@@ -37,8 +43,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.flatMapE(crossinline mapper: (T) -
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.flatMapEE(crossinline mapper: (T) -> Observable<Either<E, R>>): Observable<Either<E, R>> {
-    return flatMap { it.flatMapObservableE(mapper) }
+inline fun <E, T, R> Observable<Either<E, T>>.flatMapEither(crossinline mapper: (T) -> Observable<Either<E, R>>): Observable<Either<E, R>> {
+    return flatMap { it.flatMapObservableEither(mapper) }
 }
 
 @CheckReturnValue
@@ -49,8 +55,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.concatMapE(crossinline mapper: (T)
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.concatMapEE(crossinline mapper: (T) -> Observable<Either<E, R>>): Observable<Either<E, R>> {
-    return concatMap { it.flatMapObservableE(mapper) }
+inline fun <E, T, R> Observable<Either<E, T>>.concatMapEither(crossinline mapper: (T) -> Observable<Either<E, R>>): Observable<Either<E, R>> {
+    return concatMap { it.flatMapObservableEither(mapper) }
 }
 
 @CheckReturnValue
@@ -61,8 +67,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.switchMapE(crossinline mapper: (T)
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.switchMapEE(crossinline mapper: (T) -> Observable<Either<E, R>>): Observable<Either<E, R>> {
-    return switchMap { it.flatMapObservableE(mapper) }
+inline fun <E, T, R> Observable<Either<E, T>>.switchMapEither(crossinline mapper: (T) -> Observable<Either<E, R>>): Observable<Either<E, R>> {
+    return switchMap { it.flatMapObservableEither(mapper) }
 }
 
 @CheckReturnValue
@@ -73,8 +79,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.flatMapSingleE(crossinline mapper:
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.flatMapSingleEE(crossinline mapper: (T) -> Single<Either<E, R>>): Observable<Either<E, R>> {
-    return flatMapSingle { it.flatMapSingleE(mapper) }
+inline fun <E, T, R> Observable<Either<E, T>>.flatMapSingleEither(crossinline mapper: (T) -> Single<Either<E, R>>): Observable<Either<E, R>> {
+    return flatMapSingle { it.flatMapSingleEither(mapper) }
 }
 
 @CheckReturnValue
@@ -85,8 +91,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.switchMapSingleE(crossinline mappe
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.switchMapSingleEE(crossinline mapper: (T) -> Single<Either<E, R>>): Observable<Either<E, R>> {
-    return switchMapSingle { it.flatMapSingleE(mapper) }
+inline fun <E, T, R> Observable<Either<E, T>>.switchMapSingleEither(crossinline mapper: (T) -> Single<Either<E, R>>): Observable<Either<E, R>> {
+    return switchMapSingle { it.flatMapSingleEither(mapper) }
 }
 
 @CheckReturnValue
@@ -97,6 +103,6 @@ inline fun <E, T, R> Observable<Either<E, T>>.concatMapSingleE(crossinline mappe
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.concatMapSingleEE(crossinline mapper: (T) -> Single<Either<E, R>>): Observable<Either<E, R>> {
-    return concatMapSingle { it.flatMapSingleE(mapper) }
+inline fun <E, T, R> Observable<Either<E, T>>.concatMapSingleEither(crossinline mapper: (T) -> Single<Either<E, R>>): Observable<Either<E, R>> {
+    return concatMapSingle { it.flatMapSingleEither(mapper) }
 }
