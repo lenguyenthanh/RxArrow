@@ -7,7 +7,8 @@ import io.reactivex.Single
 import io.reactivex.annotations.CheckReturnValue
 import io.reactivex.annotations.SchedulerSupport
 
-inline fun <E, T, R> Single<Either<E, T>>.mapEither(crossinline mapper: (T) -> Either<E, R>): Single<Either<E, R>> {
+inline fun <E1, E2, E, T, R> Single<Either<E1, T>>.mapEither(crossinline mapper: (T) -> Either<E2, R>): Single<Either<E, R>>
+        where E1 : E, E2 : E {
     return map { either ->
         when (either) {
             is Either.Right -> mapper(either.b)
@@ -16,7 +17,7 @@ inline fun <E, T, R> Single<Either<E, T>>.mapEither(crossinline mapper: (T) -> E
     }
 }
 
-inline fun <E, T, R> Single<Either<E, T>>.map(crossinline mapper: (T) -> R): Single<Either<E, R>> {
+inline fun <E, T, R> Single<Either<E, T>>.mapE(crossinline mapper: (T) -> R): Single<Either<E, R>> {
     return mapEither { mapper(it).right() }
 }
 
@@ -28,18 +29,20 @@ inline fun <E, T, R> Single<Either<E, T>>.flatMapE(crossinline mapper: (T) -> Si
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Single<Either<E, T>>.flatMapEither(crossinline mapper: (T) -> Single<Either<E, R>>): Single<Either<E, R>> {
+inline fun <E1, E2, E, T, R> Single<Either<E1, T>>.flatMapEither(crossinline mapper: (T) -> Single<Either<E2, R>>): Single<Either<E, R>>
+        where E1 : E, E2 : E {
     return flatMap { it.flatMapSingleEither(mapper) }
 }
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
 inline fun <E, T, R> Single<Either<E, T>>.flatMapObservableE(crossinline mapper: (T) -> Observable<R>): Observable<Either<E, R>> {
-    return flatMapObservable{ it.flatMapObservable(mapper) }
+    return flatMapObservable { it.flatMapObservable(mapper) }
 }
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Single<Either<E, T>>.flatMapObservableEither(crossinline mapper: (T) -> Observable<Either<E,R>>): Observable<Either<E, R>> {
-    return flatMapObservable{ it.flatMapObservableEither(mapper) }
+inline fun <E1, E2, E, T, R> Single<Either<E1, T>>.flatMapObservableEither(crossinline mapper: (T) -> Observable<Either<E2, R>>): Observable<Either<E, R>>
+        where E1 : E, E2 : E {
+    return flatMapObservable { it.flatMapObservableEither(mapper) }
 }

@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 object Versions {
-    val arrow = "0.10.0-SNAPSHOT"
-    val kotlin = "1.3.41"
-    val rxJava = "2.2.10"
+    const val arrow = "0.10.0-SNAPSHOT"
+    const val kotlin = "1.3.41"
+    const val rxJava = "2.2.10"
 
-    val spek = "2.0.6"
+    const val spek = "2.0.6"
 }
 
 
@@ -23,6 +23,21 @@ plugins {
 
 group = "com.lenguyenthanh"
 version = "0.10.0-SNAPSHOT"
+
+//additional source sets
+sourceSets {
+    val examples by creating {
+        java {
+            compileClasspath += sourceSets.main.get().output
+            runtimeClasspath += sourceSets.main.get().output
+        }
+    }
+}
+
+//examples configuration
+val examplesImplementation by configurations.getting {
+    extendsFrom(configurations.implementation.get())
+}
 
 repositories {
     jcenter()

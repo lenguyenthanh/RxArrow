@@ -15,7 +15,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.mapE(crossinline mapper: (T) -> R)
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.mapEither(crossinline mapper: (T) -> Either<E, R>): Observable<Either<E, R>> {
+inline fun <E1, E2, E, T, R> Observable<Either<E1, T>>.mapEither(crossinline mapper: (T) -> Either<E2, R>): Observable<Either<E, R>>
+        where E1 : E, E2 : E {
     return map { either ->
         when (either) {
             is Either.Right -> mapper(either.b)
@@ -43,7 +44,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.flatMapE(crossinline mapper: (T) -
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.flatMapEither(crossinline mapper: (T) -> Observable<Either<E, R>>): Observable<Either<E, R>> {
+inline fun <E1, E2, E, T, R> Observable<Either<E1, T>>.flatMapEither(crossinline mapper: (T) -> Observable<Either<E2, R>>): Observable<Either<E, R>>
+        where E1 : E, E2 : E {
     return flatMap { it.flatMapObservableEither(mapper) }
 }
 
@@ -55,7 +57,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.concatMapE(crossinline mapper: (T)
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.concatMapEither(crossinline mapper: (T) -> Observable<Either<E, R>>): Observable<Either<E, R>> {
+inline fun <E1, E2, E, T, R> Observable<Either<E1, T>>.concatMapEither(crossinline mapper: (T) -> Observable<Either<E2, R>>): Observable<Either<E, R>>
+        where E1 : E, E2 : E {
     return concatMap { it.flatMapObservableEither(mapper) }
 }
 
@@ -67,7 +70,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.switchMapE(crossinline mapper: (T)
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.switchMapEither(crossinline mapper: (T) -> Observable<Either<E, R>>): Observable<Either<E, R>> {
+inline fun <E1, E2, E, T, R> Observable<Either<E1, T>>.switchMapEither(crossinline mapper: (T) -> Observable<Either<E2, R>>): Observable<Either<E, R>>
+        where E1 : E, E2 : E {
     return switchMap { it.flatMapObservableEither(mapper) }
 }
 
@@ -79,7 +83,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.flatMapSingleE(crossinline mapper:
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.flatMapSingleEither(crossinline mapper: (T) -> Single<Either<E, R>>): Observable<Either<E, R>> {
+inline fun <E1, E2, E, T, R> Observable<Either<E1, T>>.flatMapSingleEither(crossinline mapper: (T) -> Single<Either<E2, R>>): Observable<Either<E, R>>
+        where E1 : E, E2 : E {
     return flatMapSingle { it.flatMapSingleEither(mapper) }
 }
 
@@ -91,7 +96,8 @@ inline fun <E, T, R> Observable<Either<E, T>>.switchMapSingleE(crossinline mappe
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.switchMapSingleEither(crossinline mapper: (T) -> Single<Either<E, R>>): Observable<Either<E, R>> {
+inline fun <E1, E2, E, T, R> Observable<Either<E1, T>>.switchMapSingleEither(crossinline mapper: (T) -> Single<Either<E2, R>>): Observable<Either<E, R>>
+        where E1 : E, E2 : E {
     return switchMapSingle { it.flatMapSingleEither(mapper) }
 }
 
@@ -103,6 +109,7 @@ inline fun <E, T, R> Observable<Either<E, T>>.concatMapSingleE(crossinline mappe
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun <E, T, R> Observable<Either<E, T>>.concatMapSingleEither(crossinline mapper: (T) -> Single<Either<E, R>>): Observable<Either<E, R>> {
+inline fun<E1, E2, E, T, R> Observable<Either<E1, T>>.concatMapSingleEither(crossinline mapper: (T) -> Single<Either<E2, R>>): Observable<Either<E, R>>
+        where E1 : E, E2 : E {
     return concatMapSingle { it.flatMapSingleEither(mapper) }
 }
