@@ -13,4 +13,8 @@ object EithersSpec : Spek({
 
        }
    }
+
+    describe("scanEither") {
+
+    }
 })

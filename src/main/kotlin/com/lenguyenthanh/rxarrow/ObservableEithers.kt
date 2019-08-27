@@ -1,11 +1,12 @@
 package com.lenguyenthanh.rxarrow
 
-import arrow.core.Either
-import arrow.core.right
+import arrow.core.*
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.annotations.CheckReturnValue
 import io.reactivex.annotations.SchedulerSupport
+import io.reactivex.functions.BiFunction
+import io.reactivex.internal.operators.observable.ObservableEmpty
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
@@ -23,6 +24,12 @@ inline fun <E1, E2, E, T, R> Observable<Either<E1, T>>.mapEither(crossinline map
             is Either.Left -> either
         }
     }
+}
+
+@CheckReturnValue
+@SchedulerSupport(SchedulerSupport.NONE)
+inline fun <E1, E2, T> Observable<Either<E1, T>>.mapLeft(crossinline mapper: (E1) -> E2): Observable<Either<E2, T>> {
+    return map { either -> either.mapLeft { mapper(it) } }
 }
 
 @CheckReturnValue
@@ -109,7 +116,29 @@ inline fun <E, T, R> Observable<Either<E, T>>.concatMapSingleE(crossinline mappe
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-inline fun<E1, E2, E, T, R> Observable<Either<E1, T>>.concatMapSingleEither(crossinline mapper: (T) -> Single<Either<E2, R>>): Observable<Either<E, R>>
+inline fun <E1, E2, E, T, R> Observable<Either<E1, T>>.concatMapSingleEither(crossinline mapper: (T) -> Single<Either<E2, R>>): Observable<Either<E, R>>
         where E1 : E, E2 : E {
     return concatMapSingle { it.flatMapSingleEither(mapper) }
+}
+
+@CheckReturnValue
+@SchedulerSupport(SchedulerSupport.NONE)
+fun <E, T, R> Observable<Either<E, T>>.scanEither(initialValue: R, accumulator: BiFunction<R,T,R>): Observable<Either<E, R>> {
+    return scan(initialValue.right() as Either<E, R>, {t1, t2 ->
+        when(t2) {
+            is Either.Left -> t2.a.left()
+            is Either.Right -> {
+                when(t1) {
+                    is Either.Left -> accumulator.apply(initialValue, t2.b).right()
+                    is Either.Right -> accumulator.apply(t1.b, t2.b).right()
+                }
+            }
+        }
+    })
+}
+
+@CheckReturnValue
+@SchedulerSupport(SchedulerSupport.NONE)
+fun <E, T, R> Observable<Either<E, T>>.scanWithEither(seed: (T) -> R, accumulator: BiFunction<R,T,R>): Observable<Either<E, R>> {
+    return Observable.empty()
 }

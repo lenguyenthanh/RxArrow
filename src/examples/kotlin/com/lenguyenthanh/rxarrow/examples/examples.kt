@@ -3,6 +3,7 @@ package com.lenguyenthanh.rxarrow.examples
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import com.lenguyenthanh.rxarrow.examples.util.disposedBy
 import com.lenguyenthanh.rxarrow.flatMapEither
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -10,9 +11,11 @@ import io.reactivex.disposables.CompositeDisposable
 
 fun main(args: Array<String>) {
 
-    val subscription = CompositeDisposable()
+    val bag = CompositeDisposable()
 
-    singleFlatMapEitherExample().subscribe { either -> println("$either") }
+    singleFlatMapEitherExample()
+        .subscribe { either -> println("$either") }
+        .disposedBy(bag)
 }
 
 sealed class Error
