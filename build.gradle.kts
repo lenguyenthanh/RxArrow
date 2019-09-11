@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 object Versions {
-    const val arrow = "0.10.0-SNAPSHOT"
+    const val arrow = "0.10.0"
     const val kotlin = "1.3.41"
     const val rxJava = "2.2.10"
 
@@ -41,7 +41,7 @@ val examplesImplementation by configurations.getting {
 
 repositories {
     jcenter()
-    maven(url="https://oss.jfrog.org/artifactory/oss-snapshot-local/")
+    maven("https://dl.bintray.com/arrow-kt/arrow-kt/")
 }
 
 

@@ -14,4 +14,4 @@ All of functions are subjects to change. So please serious consider copy/paste i
 
 ## Compatibility
 
-Supports RxJava2 and Arrow version 0.10.0-Snapshot.
+Supports RxJava2 and Arrow version 0.10.0.
