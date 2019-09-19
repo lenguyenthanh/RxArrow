@@ -12,6 +12,18 @@ Now, this library only support very few extension functions, but I will update i
 
 All of functions are subjects to change. So please serious consider copy/paste instead of use this library directly.
 
+## Usage
+
+```
+    repositories {
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+
+    implementation "io.arrow-kt:arrow-core:$arrow_version"
+    implementation "com.github.lenguyenthanh:RxArrow:$rxarrow"
+```
+
 ## Compatibility
 
 Supports RxJava2 and Arrow version 0.10.0.
