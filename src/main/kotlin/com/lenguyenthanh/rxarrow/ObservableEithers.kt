@@ -136,9 +136,3 @@ fun <E, T, R> Observable<Either<E, T>>.scanEither(initialValue: R, accumulator: 
         }
     })
 }
-
-@CheckReturnValue
-@SchedulerSupport(SchedulerSupport.NONE)
-fun <E, T, R> Observable<Either<E, T>>.scanWithEither(seed: (T) -> R, accumulator: BiFunction<R,T,R>): Observable<Either<E, R>> {
-    return Observable.empty()
-}
