@@ -6,7 +6,6 @@ import io.reactivex.Single
 import io.reactivex.annotations.CheckReturnValue
 import io.reactivex.annotations.SchedulerSupport
 import io.reactivex.functions.BiFunction
-import io.reactivex.internal.operators.observable.ObservableEmpty
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
@@ -135,4 +134,22 @@ fun <E, T, R> Observable<Either<E, T>>.scanEither(initialValue: R, accumulator: 
             }
         }
     })
+}
+
+@CheckReturnValue
+@SchedulerSupport(SchedulerSupport.NONE)
+fun <E, T> Observable<Either<E, T>>.fix(toThrowable: (E) -> Throwable): Observable<T> {
+    return flatMap {
+        when (it) {
+            is Either.Right -> Observable.just(it.b)
+            is Either.Left -> Observable.error(toThrowable(it.a))
+        }
+    }
+}
+
+@CheckReturnValue
+@SchedulerSupport(SchedulerSupport.NONE)
+fun <E, T> Observable<T>.either(toError: (Throwable) -> E): Observable<Either<E, T>> {
+    return map { it.right() as Either<E, T> }
+        .onErrorReturn { toError(it).left()}
 }

@@ -1,6 +1,7 @@
 package com.lenguyenthanh.rxarrow
 
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.right
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -55,4 +56,22 @@ inline fun <E, T, R> Single<Either<E, T>>.flatMapObservableE(crossinline mapper:
 inline fun <E1, E2, E, T, R> Single<Either<E1, T>>.flatMapObservableEither(crossinline mapper: (T) -> Observable<Either<E2, R>>): Observable<Either<E, R>>
         where E1 : E, E2 : E {
     return flatMapObservable { it.flatMapObservableEither(mapper) }
+}
+
+@CheckReturnValue
+@SchedulerSupport(SchedulerSupport.NONE)
+fun <E, T> Single<Either<E, T>>.fix(toThrowable: (E) -> Throwable): Single<T> {
+    return flatMap {
+        when (it) {
+            is Either.Right -> Single.just(it.b)
+            is Either.Left -> Single.error(toThrowable(it.a))
+        }
+    }
+}
+
+@CheckReturnValue
+@SchedulerSupport(SchedulerSupport.NONE)
+fun <E, T> Single<T>.either(toError: (Throwable) -> E): Single<Either<E, T>> {
+    return this.map { it.right() as Either<E, T> }
+        .onErrorReturn { toError(it).left() }
 }
