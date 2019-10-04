@@ -5,6 +5,8 @@ import arrow.core.left
 import arrow.core.right
 import com.lenguyenthanh.rxarrow.examples.util.disposedBy
 import com.lenguyenthanh.rxarrow.flatMapEither
+import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 

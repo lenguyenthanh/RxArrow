@@ -6,6 +6,7 @@ object Versions {
     const val rxJava = "2.2.10"
 
     const val spek = "2.0.6"
+    const val strikt = "0.22.2"
 }
 
 
@@ -42,6 +43,7 @@ val examplesImplementation by configurations.getting {
 repositories {
     jcenter()
     maven("https://dl.bintray.com/arrow-kt/arrow-kt/")
+    maven("https://dl.bintray.com/robfletcher/maven")
 }
 
 
@@ -51,11 +53,16 @@ dependencies {
     // Arrow
     api("io.arrow-kt:arrow-core:${Versions.arrow}")
     api("io.arrow-kt:arrow-syntax:${Versions.arrow}")
+
     // RxJava
     api("io.reactivex.rxjava2:rxjava:${Versions.rxJava}")
 
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:${Versions.spek}")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:${Versions.spek}")
+
+    testImplementation("io.strikt:strikt-core:${Versions.strikt}")
+    testImplementation("io.strikt:strikt-arrow:${Versions.strikt}")
+
     // spek requires kotlin-reflect, can be omitted if already in the classpath
     testRuntimeOnly("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}")
 }
