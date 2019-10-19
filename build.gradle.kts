@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 object Versions {
-    const val arrow = "0.10.0"
+    const val arrow = "0.10.1"
     const val kotlin = "1.3.41"
     const val rxJava = "2.2.10"
 
@@ -43,7 +43,6 @@ val examplesImplementation by configurations.getting {
 repositories {
     jcenter()
     maven("https://dl.bintray.com/arrow-kt/arrow-kt/")
-    maven("https://dl.bintray.com/robfletcher/maven")
 }
 
 
@@ -51,11 +50,11 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // Arrow
-    api("io.arrow-kt:arrow-core:${Versions.arrow}")
-    api("io.arrow-kt:arrow-syntax:${Versions.arrow}")
+    implementation("io.arrow-kt:arrow-core:${Versions.arrow}")
+    implementation("io.arrow-kt:arrow-syntax:${Versions.arrow}")
 
     // RxJava
-    api("io.reactivex.rxjava2:rxjava:${Versions.rxJava}")
+    implementation("io.reactivex.rxjava2:rxjava:${Versions.rxJava}")
 
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:${Versions.spek}")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:${Versions.spek}")
