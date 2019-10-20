@@ -1,9 +1,6 @@
 package com.lenguyenthanh.rxarrow
 
-import arrow.core.Either
-import arrow.core.identity
-import arrow.core.left
-import arrow.core.right
+import arrow.core.*
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.annotations.CheckReturnValue
@@ -124,15 +121,8 @@ fun <E, T, R> ObservableZ<E, T>.scanZ(
     accumulator: BiFunction<R, T, R>
 ): ObservableZ<E, R> {
     return scan(initialValue.right() as Either<E, R>, { t1, t2 ->
-        when (t2) {
-            is Either.Left -> t2.a.left()
-            is Either.Right -> {
-                when (t1) {
-                    is Either.Left -> accumulator.apply(initialValue, t2.b).right()
-                    is Either.Right -> accumulator.apply(t1.b, t2.b).right()
-                }
-            }
-        }
+        t2.map { v2 -> accumulator.apply(t1.getOrElse { initialValue }, v2)}
+//        t2.map { v2 -> t1.fold({ accumulator.apply(initialValue, v2) }, { v1 -> accumulator.apply(v1, v2) }) }
     })
 }
 
