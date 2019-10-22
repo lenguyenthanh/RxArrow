@@ -1,20 +1,45 @@
 # RxArrow [![](https://jitpack.io/v/lenguyenthanh/RxArrow.svg)](https://jitpack.io/#lenguyenthanh/RxArrow)
 
-## RxJava extensions for Arrow's Data Types
+RxArrow is a collection of RxJava extensions and typealiases [Arrow's Data Types](https://arrow-kt.io).
 
-RxArrow is a lightweight library that adds RxJava convenient extension functions to [Arrow's Data Types](https://arrow-kt.io).
+## Table of Contents
 
-## Notice
++ [Usage](#usage)
++ [Setup](#setup)
++ [Compatibility](#compatibility)
++ [Contributing](#contributing)
++ [License](/LICENSE)
 
-Now, this library only support very few extension functions, but I will update it quickly in next few weeks.
+## Usage <a name = "usage"></a>
 
-## Danger
+### [Observable<Either<E, A>> aka ObservableZ](https://github.com/lenguyenthanh/RxArrow/blob/master/src/main/kotlin/com/lenguyenthanh/rxarrow/ObservableZ.kt)
 
-All of functions are subjects to change. So please serious consider copy/paste instead of use this library directly.
+`ObservableZ<E, A>` is a type alias for `Observable<Either<E, A>>`. It has a convenient extension functions to make life easier when working with `Observable<Either<E, A>>`.
 
-## Usage
+```Kotlin
 
+Observable.just("error".left(), 23.right()) // Left(error), Right(24): ObservableZ<String, Int>
+    .mapZ { it + 2 } // Left("error"), Right(25): ObservableZ<String, Int>
+    .mapLeft { it.reversed() } // Left("rorre"), Right(25): ObservableZ<String, Int>
+    .mapLeft { SomethingWentWrong } // Left(SomethingWentWrong), Right(25): ObservableZ<SomethingWentWrong, Int>
+    .flatMapZ { Observable.just(it * it) } // Left(SomethingWentWrong), Right(625): ObservableZ<SomethingWentWrong, Int>
+    .flatMapSingleEither { divide(it, 0) } // Left(SomethingWentWrong), Left(DevidedByZero): ObservableZ<Error, Int>
+    .subscribe { either -> println("$either") }
 ```
+
+### [Single<Either<E, A>> aka SingleZ](https://github.com/lenguyenthanh/RxArrow/blob/master/src/main/kotlin/com/lenguyenthanh/rxarrow/SingleZ.kt)
+
+Similar to `ObservableZ`
+
+### [Maybe<Either<E, A>> aka MaybeZ](https://github.com/lenguyenthanh/RxArrow/blob/master/src/main/kotlin/com/lenguyenthanh/rxarrow/MaybeZ.kt)
+
+Similar to `ObservableZ`
+
+## Setup <a name = "setup"></a>
+
+You can get `RxArrow` by using [Jitpack](https://jitpack.io/#lenguyenthanh/RxArrow/).
+
+```Gradle
     repositories {
         jcenter()
         maven { url 'https://jitpack.io' }
@@ -24,6 +49,10 @@ All of functions are subjects to change. So please serious consider copy/paste i
     implementation "com.github.lenguyenthanh:RxArrow:$rxarrow"
 ```
 
-## Compatibility
+## Compatibility <a name = "compatibility"></a>
 
-Supports RxJava2 and Arrow version 0.10.0.
+Supports RxJava2 and Arrow version `0.10.1`.
+
+## Contributing <a name = "contributing"></a>
+
+Any bug reports, feature requests, questions and pull requests are very welcome.

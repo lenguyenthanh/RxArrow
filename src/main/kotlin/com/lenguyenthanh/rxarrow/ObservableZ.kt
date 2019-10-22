@@ -19,7 +19,7 @@ inline fun <E, T, R> ObservableZ<E, T>.mapZ(crossinline mapper: (T) -> R): Obser
 @SchedulerSupport(SchedulerSupport.NONE)
 inline fun <E1, E2, E, T, R> ObservableZ<E1, T>.mapEither(crossinline mapper: (T) -> Either<E2, R>): ObservableZ<E, R>
         where E1 : E, E2 : E {
-    return map { it.fold({ e -> e.left() }) { t -> mapper(t) } }
+    return map { it.flatMap { t -> mapper(t) } }
 }
 
 @CheckReturnValue
@@ -121,8 +121,7 @@ fun <E, T, R> ObservableZ<E, T>.scanZ(
     accumulator: BiFunction<R, T, R>
 ): ObservableZ<E, R> {
     return scan(initialValue.right() as Either<E, R>, { t1, t2 ->
-        t2.map { v2 -> accumulator.apply(t1.getOrElse { initialValue }, v2)}
-//        t2.map { v2 -> t1.fold({ accumulator.apply(initialValue, v2) }, { v1 -> accumulator.apply(v1, v2) }) }
+        t2.map { v2 -> accumulator.apply(t1.getOrElse { initialValue }, v2) }
     })
 }
 
