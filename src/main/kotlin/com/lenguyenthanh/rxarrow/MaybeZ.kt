@@ -59,8 +59,8 @@ inline fun <E1, E2, E, T, R> MaybeZ<E1, T>.flatMapObservableEither(crossinline m
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
 fun <E, T> MaybeZ<E, T>.fix(toThrowable: (E) -> Throwable): Maybe<T> {
-    return flatMap {
-        it.fold({ Maybe.error<T> { toThrowable(it) } }, { Maybe.just(it) })
+    return flatMap { either ->
+        either.fold({ Maybe.error<T> { toThrowable(it) } }, { Maybe.just(it) })
     }
 }
 
