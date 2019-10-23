@@ -4,15 +4,21 @@ RxArrow is a collection of RxJava extensions and typealiases [Arrow's Data Types
 
 ## Table of Contents
 
++ [Why Z](#z)
 + [Usage](#usage)
 + [Setup](#setup)
 + [Compatibility](#compatibility)
 + [Contributing](#contributing)
 + [License](/LICENSE)
 
+
+## Why `Z` <a name = "z"></a>
+
+I use `Z` as a postfix for all typealiases because I was influenced by [ZIO](https://zio.dev).
+
 ## Usage <a name = "usage"></a>
 
-### [Observable<Either<E, A>> aka ObservableZ](https://github.com/lenguyenthanh/RxArrow/blob/master/src/main/kotlin/com/lenguyenthanh/rxarrow/ObservableZ.kt)
+### [Observable<Either<E, A>> aka ObservableZ<E, A>](https://github.com/lenguyenthanh/RxArrow/blob/master/src/main/kotlin/com/lenguyenthanh/rxarrow/ObservableZ.kt)
 
 `ObservableZ<E, A>` is a type alias for `Observable<Either<E, A>>`. It has a convenient extension functions to make life easier when working with `Observable<Either<E, A>>`.
 
@@ -27,11 +33,11 @@ Observable.just("error".left(), 23.right()) // Left(error), Right(24): Observabl
     .subscribe { either -> println("$either") }
 ```
 
-### [Single<Either<E, A>> aka SingleZ](https://github.com/lenguyenthanh/RxArrow/blob/master/src/main/kotlin/com/lenguyenthanh/rxarrow/SingleZ.kt)
+### [Single<Either<E, A>> aka SingleZ<E, A>](https://github.com/lenguyenthanh/RxArrow/blob/master/src/main/kotlin/com/lenguyenthanh/rxarrow/SingleZ.kt)
 
 Similar to `ObservableZ`
 
-### [Maybe<Either<E, A>> aka MaybeZ](https://github.com/lenguyenthanh/RxArrow/blob/master/src/main/kotlin/com/lenguyenthanh/rxarrow/MaybeZ.kt)
+### [Maybe<Either<E, A>> aka MaybeZ<E, A>](https://github.com/lenguyenthanh/RxArrow/blob/master/src/main/kotlin/com/lenguyenthanh/rxarrow/MaybeZ.kt)
 
 Similar to `ObservableZ`
 
