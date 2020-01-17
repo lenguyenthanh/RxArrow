@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 object Versions {
-    const val arrow = "0.10.2"
+    const val arrow = "0.10.4"
     const val kotlin = "1.3.41"
     const val rxJava = "2.2.10"
 
@@ -44,7 +44,6 @@ repositories {
     jcenter()
     maven("https://dl.bintray.com/arrow-kt/arrow-kt/")
 }
-
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
