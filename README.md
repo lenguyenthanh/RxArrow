@@ -57,7 +57,7 @@ You can get `RxArrow` by using [Jitpack](https://jitpack.io/#lenguyenthanh/RxArr
 
 ## Compatibility <a name = "compatibility"></a>
 
-Supports RxJava2 and Arrow version `0.10.1`.
+Supports RxJava2 and Arrow version `0.10.5`.
 
 ## Contributing <a name = "contributing"></a>
 
