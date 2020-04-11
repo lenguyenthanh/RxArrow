@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 object Versions {
-    const val arrow = "0.10.4"
+    const val arrow = "0.10.5"
     const val kotlin = "1.3.41"
     const val rxJava = "2.2.10"
 
