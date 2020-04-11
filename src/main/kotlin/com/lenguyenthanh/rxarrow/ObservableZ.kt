@@ -127,6 +127,17 @@ fun <E, T, R> ObservableZ<E, T>.scanZ(
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
+fun <E, T, R> ObservableZ<E, T>.scanZ(
+    initialValue: R,
+    accumulator: (R, T) -> R
+): ObservableZ<E, R> {
+    return scan(initialValue.right() as Either<E, R>, { t1, t2 ->
+        t2.map { v2 -> accumulator(t1.getOrElse { initialValue }, v2) }
+    })
+}
+
+@CheckReturnValue
+@SchedulerSupport(SchedulerSupport.NONE)
 fun <E, T> ObservableZ<E, T>.fix(toThrowable: (E) -> Throwable): Observable<T> {
     return flatMap {
         it.fold({ Observable.error<T> { toThrowable(it) } }, { Observable.just(it) })
