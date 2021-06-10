@@ -11,6 +11,7 @@ object Versions {
 plugins {
     kotlin("jvm") version "1.5.10"
     id("java-library")
+    `maven-publish`
 }
 
 group = "com.lenguyenthanh"
