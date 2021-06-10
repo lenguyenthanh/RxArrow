@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 object Versions {
     const val rxJava = "2.2.10"
 
-    const val spek = "2.0.15"
+    const val spek = "2.0.7"
     const val strikt = "0.22.2"
 }
 
