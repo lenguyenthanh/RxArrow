@@ -1,29 +1,21 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 object Versions {
-    const val arrow = "0.10.5"
-    const val kotlin = "1.3.41"
     const val rxJava = "2.2.10"
 
-    const val spek = "2.0.6"
+    const val spek = "2.0.15"
     const val strikt = "0.22.2"
 }
 
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-}
-
 plugins {
+    kotlin("jvm") version "1.5.10"
     id("java-library")
-    kotlin("jvm") version "1.3.41"
-    id("maven")
 }
 
 group = "com.lenguyenthanh"
 version = "0.10.0-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 //additional source sets
 sourceSets {
@@ -41,16 +33,14 @@ val examplesImplementation by configurations.getting {
 }
 
 repositories {
-    jcenter()
-    maven("https://dl.bintray.com/arrow-kt/arrow-kt/")
+    mavenCentral()
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    // Arrow
-    implementation("io.arrow-kt:arrow-core:${Versions.arrow}")
-    implementation("io.arrow-kt:arrow-syntax:${Versions.arrow}")
+    implementation(platform("io.arrow-kt:arrow-stack:0.13.2"))
+    implementation("io.arrow-kt:arrow-core")
 
     // RxJava
     implementation("io.reactivex.rxjava2:rxjava:${Versions.rxJava}")
@@ -58,13 +48,15 @@ dependencies {
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:${Versions.spek}")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:${Versions.spek}")
 
-    testImplementation("io.strikt:strikt-core:${Versions.strikt}")
-    testImplementation("io.strikt:strikt-arrow:${Versions.strikt}")
+//    testImplementation("io.strikt:strikt-core:${Versions.strikt}")
+//    testImplementation("io.strikt:strikt-arrow:${Versions.strikt}")
 
     // spek requires kotlin-reflect, can be omitted if already in the classpath
-    testRuntimeOnly("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}")
+    testRuntimeOnly("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+tasks.withType<Test> {
+    useJUnitPlatform {
+        includeEngines = setOf("spek2")
+    }
 }
