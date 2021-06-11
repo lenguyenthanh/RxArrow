@@ -10,11 +10,12 @@ object Versions {
 
 plugins {
     kotlin("jvm") version "1.5.10"
-    id("java-library")
+//    id("java-library")
+    `maven-publish`
 }
 
 group = "com.lenguyenthanh"
-version = "0.10.0-SNAPSHOT"
+version = "0.13.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 //additional source sets
@@ -33,6 +34,7 @@ val examplesImplementation by configurations.getting {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -59,4 +61,21 @@ tasks.withType<Test> {
     useJUnitPlatform {
         includeEngines = setOf("spek2")
     }
+}
+
+
+
+publishing {
+    publications {
+        create<MavenPublication>("binary") {
+            from(components["java"])
+        }
+    }
+    //repositories {
+        //// change URLs to point to your repos, e.g. http://my.org/repo
+        //maven {
+            //name = "local"
+            //url = uri(layout.buildDirectory.dir("~/.m2"))
+        //}
+    //}
 }
