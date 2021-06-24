@@ -66,7 +66,7 @@ fun <E, T> MaybeZ<E, T>.fix(toThrowable: (E) -> Throwable): Maybe<T> {
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-fun <T> MaybeZ<Throwable, T>.fix(): Maybe<T> {
+fun <E, T> MaybeZ<E, T>.fix(): Maybe<T> where E : Throwable {
     return fix(::identity)
 }
 

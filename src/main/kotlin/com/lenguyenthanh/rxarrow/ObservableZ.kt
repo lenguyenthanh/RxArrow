@@ -146,7 +146,7 @@ fun <E, T> ObservableZ<E, T>.fix(toThrowable: (E) -> Throwable): Observable<T> {
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-fun <T> ObservableZ<Throwable, T>.fix(): Observable<T> {
+fun <E, T> ObservableZ<E, T>.fix(): Observable<T> where E : Throwable {
     return fix(::identity)
 }
 

@@ -66,7 +66,7 @@ fun <E, T> SingleZ<E, T>.fix(toThrowable: (E) -> Throwable): Single<T> {
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
-fun <T> SingleZ<Throwable, T>.fix(): Single<T> {
+fun <E, T> SingleZ<E, T>.fix(): Single<T> where E : Throwable {
     return fix(::identity)
 }
 
